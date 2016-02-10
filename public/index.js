@@ -77,7 +77,6 @@
             }
 
             notes = this.notesFromContent(content);
-            //notes = this.noteFromContent(content);
 
             this.textDisplay.innerHTML = content.substr(notes.length);
 
@@ -103,25 +102,6 @@
             return notes;
         },
 
-        noteFromContent: function(content) {
-            var wordBoundary, fragment;
-
-            fragment = content.substr(0, 5);
-
-            if (isNaN(parseInt(fragment.charAt(0), 10))) {
-                return fragment.substr(0, 1);
-            }
-
-            wordBoundary = fragment.search(/\d+:\d+/);
-
-            if (wordBoundary === -1) {
-                return fragment.substr(0, 1);
-            }
-
-            return fragment.substr(0, fragment.match(/\d+:\d+/)[0].length);
-
-        },
-
         sing: function(notes) {
             notes.split('').forEach(function(note, index) {
                 var charValue, highlight, frequency, multiplier;
@@ -143,7 +123,7 @@
             var highlight, frequency, multiplier;
             frequency = note * (index/4 + 1);
             highlight = note < 57 && note > 48;
-            frequency = highlight === true ? frequency * 5 : frequency;
+            frequency = highlight === true ? frequency * 7 : frequency;
             multiplier = highlight === true ? 10 : notesLength;
 
             return [frequency, multiplier];
