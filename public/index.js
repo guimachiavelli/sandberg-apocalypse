@@ -76,31 +76,18 @@
                 this.requestChunk(this.chunkIndex);
             }
 
-            notes = this.notesFromContent(content);
-            //notes = this.noteFromContent(content);
+            notes = this.noteFromContent(content);
 
             this.textDisplay.innerHTML = content.substr(notes.length);
 
             this.sing(notes);
 
             var timeout = notes.charCodeAt(0) < 57 && notes.charCodeAt(0) > 48 ?
-                                                    10 : notes.length;
+                                                    7 : notes.length;
 
             window.setTimeout(function() {
                 this.startReading();
-            }.bind(this), 50 * timeout);
-        },
-
-        notesFromContent: function(content) {
-            var fragment, notes, wordBoundary;
-
-            fragment = content.substr(0, 50);
-            wordBoundary = fragment.search(/\s|\d+:\d+|\.|;|:|,/);
-            wordBoundary = wordBoundary === 0 ? 1 : wordBoundary;
-
-            notes = fragment.substr(0, wordBoundary);
-
-            return notes;
+            }.bind(this), 200 * timeout);
         },
 
         noteFromContent: function(content) {
@@ -132,21 +119,10 @@
                     return;
                 }
 
-                note = this.lightNote(charValue, index, notes.length);
-                //note = this.lowNote(charValue, index, notes.length);
+                note = this.lowNote(charValue, index, notes.length);
 
                 this.play(note[0], note[1]);
             }, this);
-        },
-
-        lightNote: function(note, index, notesLength) {
-            var highlight, frequency, multiplier;
-            frequency = note * (index/4 + 1);
-            highlight = note < 57 && note > 48;
-            frequency = highlight === true ? frequency * 5 : frequency;
-            multiplier = highlight === true ? 10 : notesLength;
-
-            return [frequency, multiplier];
         },
 
 
@@ -154,7 +130,7 @@
             var highlight, frequency, multiplier;
             frequency = note * 1.35;
             highlight = note < 57 && note > 48;
-            frequency = highlight === true ? frequency * 5 : frequency;
+            frequency = highlight === true ? frequency * 7 : frequency;
             multiplier = highlight === true ? 10 : notesLength;
 
             return [frequency, multiplier];
@@ -166,7 +142,7 @@
             osc = this.context.createOscillator();
             envelope = this.context.createGain();
             attack = 5;
-            release = 50 * (length );
+            release = 250 * length;
 
             envelope.gain.setValueAtTime(this.defaultVolume,
                                          this.context.currentTime);
