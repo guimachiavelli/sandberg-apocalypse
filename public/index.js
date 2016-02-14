@@ -71,7 +71,7 @@
                 return;
             }
 
-            if (content.length < this.chunkLength) {
+            if (content.length < this.chunkLength * 3) {
                 this.chunkIndex += 1;
                 this.requestChunk(this.chunkIndex);
             }
@@ -83,11 +83,11 @@
             this.sing(notes);
 
             var timeout = notes.charCodeAt(0) < 57 && notes.charCodeAt(0) > 48 ?
-                                                    7 : notes.length;
+                                                    3 : notes.length;
 
             window.setTimeout(function() {
                 this.startReading();
-            }.bind(this), 200 * timeout);
+            }.bind(this), 150 * timeout);
         },
 
         noteFromContent: function(content) {
@@ -115,10 +115,6 @@
 
                 charValue = note.charCodeAt(0);
 
-                if (charValue === 32) {
-                    return;
-                }
-
                 note = this.lowNote(charValue, index, notes.length);
 
                 this.play(note[0], note[1]);
@@ -128,10 +124,10 @@
 
         lowNote: function(note, index, notesLength) {
             var highlight, frequency, multiplier;
-            frequency = note * 1.35;
+            frequency = note;
             highlight = note < 57 && note > 48;
-            frequency = highlight === true ? frequency * 7 : frequency;
-            multiplier = highlight === true ? 10 : notesLength;
+            frequency = highlight === true ? frequency * 6 : frequency;
+            multiplier = highlight === true ? 2 : notesLength;
 
             return [frequency, multiplier];
         },
